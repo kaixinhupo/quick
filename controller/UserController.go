@@ -35,6 +35,21 @@ func (m *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Resu
 	return web.WrapPage(list,10,1)
 }
 
+// @Summary 创建用户记录
+// @Description 
+// @Tags　用户管理
+// @Accept application/json
+// @Produce application/json
+// @Param body body model.UserInfoReq true "创建参数"
+// @Success 200 {object} model.UserDetailResp
+// @Failure 400 {object} web.ErrorResp
+// @Router /user [post]
+func (m *UserController) Post(ctx iris.Context,param model.UserInfoReq) model.UserDetailResp {
+	return model.UserDetailResp{
+		Id: 1,
+	}
+}
+
 
 // @Summary 获取单个用户记录
 // @Description 
@@ -44,11 +59,58 @@ func (m *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Resu
 // @Success 200 {object} model.UserDetailResp
 // @Failure 404 
 // @Router /user/{id} [get]
-func (m *UserController) GetBy(id int64) model.UserDetailResp {
+func (m *UserController) GetBy(ctx iris.Context,id int64) model.UserDetailResp {
 	return model.UserDetailResp{
 		Id: 1,
 	}
 }
+
+
+
+// @Summary 更新用户记录
+// @Description 
+// @Tags　用户管理
+// @Accept application/json
+// @Produce application/json
+// @Param id path int64 true "ID"
+// @Param body body model.UserInfoReq true "修改参数"
+// @Success 200 {object} model.UserDetailResp
+// @Failure 400 {object} web.ErrorResp
+// @Router /user/{id} [put]
+func (m *UserController) PutBy(ctx iris.Context,id int64,param model.UserInfoReq) model.UserDetailResp {
+	return model.UserDetailResp{
+		Id: 1,
+	}
+}
+
+// @Summary 修改用户记录
+// @Description 
+// @Tags　用户管理
+// @Accept application/json
+// @Produce application/json
+// @Param id path int64 true "ID"
+// @Param body body model.UserInfoReq true "修改参数"
+// @Success 200 {object} model.UserDetailResp
+// @Failure 400 {object} web.ErrorResp
+// @Router /user/{id} [patch]
+func (m *UserController) PatchBy(ctx iris.Context,id int64,param model.UserInfoReq) model.UserDetailResp {
+	return model.UserDetailResp{
+		Id: 1,
+	}
+}
+
+// @Summary 删除用户记录
+// @Description 
+// @Tags　用户管理
+// @Produce application/json
+// @Param id path int64 true "ID"
+// @Success 200 {object} model.UserDetailResp
+// @Failure 400 {object} web.ErrorResp
+// @Router /user/{id} [delete]
+func (m *UserController) DeleteBy(ctx iris.Context,id int64) mvc.Result {
+	return web.WrapSuccess()
+}
+
 
 /*
 // 注册自定义路由

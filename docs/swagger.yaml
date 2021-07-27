@@ -18,6 +18,15 @@ definitions:
         description: 用户名
         type: string
     type: object
+  model.UserInfoReq:
+    properties:
+      password:
+        description: 密码
+        type: string
+      username:
+        description: 用户名
+        type: string
+    type: object
   web.ErrorResp:
     properties:
       code:
@@ -28,7 +37,7 @@ definitions:
         description: 额外数据
         type: object
       msg:
-        description: 错误消息
+        description: 消息
         type: string
     type: object
   web.PageParam:
@@ -68,7 +77,6 @@ paths:
       - description: 用户名
         in: query
         name: username
-        required: true
         type: string
       - default: 20
         description: 分页大小
@@ -101,7 +109,52 @@ paths:
       summary: 获取用户分页列表
       tags:
       - 用户管理
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserInfoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDetailResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResp'
+      summary: 创建用户记录
+      tags:
+      - 用户管理
   /user/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDetailResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResp'
+      summary: 删除用户记录
+      tags:
+      - 用户管理
     get:
       parameters:
       - description: ID
@@ -119,6 +172,64 @@ paths:
         "404":
           description: ""
       summary: 获取单个用户记录
+      tags:
+      - 用户管理
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 修改参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserInfoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDetailResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResp'
+      summary: 修改用户记录
+      tags:
+      - 用户管理
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 修改参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserInfoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDetailResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResp'
+      summary: 更新用户记录
       tags:
       - 用户管理
 swagger: "2.0"

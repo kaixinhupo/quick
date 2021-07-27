@@ -1,5 +1,7 @@
 package web
 
+import "github.com/kataras/iris/v12/mvc"
+
 const (
 	CodeInvalidParam = 10400
 )
@@ -25,8 +27,13 @@ type PageParam struct {
 
 type ErrorResp struct {
 	Code    int16                  `json:"code"`   //业务代码
-	Message string                 `json:"msg"`    //错误消息
+	Message string                 `json:"msg"`    //消息
 	Errors  map[string]interface{} `json:"errors"` //额外数据
+}
+
+type SuccessResp struct {
+	Code    int16  `json:"code"` //业务代码
+	Message string `json:"msg"`  //消息
 }
 
 func NewErrorResp() ErrorResp {
@@ -55,4 +62,36 @@ func (e ErrorResp) WithErrors(errors map[string]interface{}) ErrorResp {
 func (e ErrorResp) AppendError(key string, value interface{}) ErrorResp {
 	e.Errors[key] = value
 	return e
+}
+
+func WrapPage(records interface{}, total int64, current int16) mvc.Result {
+	page := PageResp{
+		Records: records,
+		Total:   total,
+		No:      current,
+	}
+
+	return mvc.Response{
+		ContentType: "application/json",
+		Object:      page,
+	}
+}
+
+func WrapSuccess() mvc.Result {
+	resp := SuccessResp{
+		Code:    0,
+		Message: "success",
+	}
+
+	return mvc.Response{
+		ContentType: "application/json",
+		Object:      resp,
+	}
+}
+
+func WrapResp(resp interface{}) mvc.Result {
+	return mvc.Response{
+		ContentType: "application/json",
+		Object:      resp,
+	}
 }

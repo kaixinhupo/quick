@@ -7,16 +7,9 @@ import (
 )
 
 // 创建请求参数
-type UserCreateReq struct {
+type UserInfoReq struct {
 	Username string `json:"username"` //用户名
 	Password string `json:"password"` //密码
-}
-
-// 修改请求参数
-type UserUpdateReq struct {
-	Id        int64  `json:"id"` //ID
-	Username  string `json:"username"` //用户名
-	Password  string `json:"password"` // 密码
 }
 
 // 查询请求参数
