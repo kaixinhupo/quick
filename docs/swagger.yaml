@@ -1,0 +1,124 @@
+basePath: /
+definitions:
+  model.UserDetailResp:
+    properties:
+      createdAt:
+        description: 创建时间
+        type: string
+      id:
+        description: ID
+        type: integer
+      password:
+        description: 密码
+        type: string
+      updatedAt:
+        description: 修改时间
+        type: string
+      username:
+        description: 用户名
+        type: string
+    type: object
+  web.ErrorResp:
+    properties:
+      code:
+        description: 业务代码
+        type: integer
+      errors:
+        additionalProperties: true
+        description: 额外数据
+        type: object
+      msg:
+        description: 错误消息
+        type: string
+    type: object
+  web.PageParam:
+    properties:
+      "no":
+        description: 页号
+        type: integer
+      size:
+        description: 分页大小
+        type: integer
+    type: object
+  web.PageResp:
+    properties:
+      "no":
+        description: 页号
+        type: integer
+      records:
+        description: 记录
+        type: object
+      total:
+        description: 总记录数
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: a golang backend api for admin project.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Swagger Quick Admin API
+  version: "1.0"
+paths:
+  /user:
+    get:
+      parameters:
+      - description: 用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      - default: 20
+        description: 分页大小
+        in: query
+        name: page.size
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page.no
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/web.PageResp'
+            - properties:
+                records:
+                  items:
+                    $ref: '#/definitions/model.UserDetailResp'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResp'
+      summary: 获取用户分页列表
+      tags:
+      - 用户管理
+  /user/{id}:
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDetailResp'
+        "404":
+          description: ""
+      summary: 获取单个用户记录
+      tags:
+      - 用户管理
+swagger: "2.0"
