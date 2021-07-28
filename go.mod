@@ -11,6 +11,7 @@ require (
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible // indirect
 	github.com/gobwas/ws v1.1.0 // indirect
+	github.com/google/wire v0.5.0
 	github.com/iris-contrib/swagger/v12 v12.2.0-alpha // indirect
 	github.com/kataras/iris/v12 v12.2.0-alpha2.0.20210717090056-b2cc3a287149
 	github.com/leodido/go-urn v1.2.1 // indirect

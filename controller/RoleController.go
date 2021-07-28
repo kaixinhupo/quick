@@ -23,6 +23,6 @@ func (c RoleController) Route() string {
 	return "/role"
 }
 
-func init() {
-	RegisterRoute(new(RoleController))
+func NewRoleController() *RoleController {
+	return &RoleController{}
 }

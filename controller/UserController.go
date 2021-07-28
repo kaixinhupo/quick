@@ -5,11 +5,14 @@ import (
 
 	"github.com/kaixinhupo/quick/infrastruture/web"
 	"github.com/kaixinhupo/quick/model"
+	"github.com/kaixinhupo/quick/service/contract"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 )
 
-type UserController struct{}
+type UserController struct{
+	userService contract.UserService
+}
 
 
 // @Summary 获取用户分页列表
@@ -130,6 +133,9 @@ func (c UserController) Route() string {
 	return "/user"
 }
 
-func init() {
-	RegisterRoute(new(UserController))
+// 构造器
+func NewUserController(userService contract.UserService) *UserController {
+	return &UserController {
+		userService: userService,
+	}
 }

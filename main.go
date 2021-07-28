@@ -5,7 +5,6 @@ import (
 	"github.com/iris-contrib/swagger/v12/swaggerFiles"
 	"github.com/kataras/iris/v12"
 
-	"github.com/kaixinhupo/quick/controller"
 	_ "github.com/kaixinhupo/quick/docs"
 )
 
@@ -19,7 +18,7 @@ import (
 // @BasePath /
 func main() {
 	app := iris.New()
-	controller.Configure(app)
+	ConfigureRouter(app)
 	configSwagger(app)
 	app.Run(iris.Addr(":8080"))
 }
