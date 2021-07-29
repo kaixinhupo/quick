@@ -8,11 +8,12 @@ import (
 	"xorm.io/xorm/names"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/kaixinhupo/quick/infrastruture/config"
 )
 
 var _defaultEngin *xorm.Engine
 
-func DefaultEngine(config *XormConfig) *xorm.Engine {
+func DefaultEngine(config *config.XormConfig) *xorm.Engine {
 	if _defaultEngin == nil {
 		engine, err := xorm.NewEngine(config.DatasourceType, config.DatasourceName); if err != nil {
 			log.Fatalln("connect db fail ",err)
