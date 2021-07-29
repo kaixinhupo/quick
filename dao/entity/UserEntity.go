@@ -1,6 +1,9 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
+
 
 type UserEntity struct {
 	Id        int64 `xorm:"bigint pk autoincr 'id' comment('ID')"`

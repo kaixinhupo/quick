@@ -1,8 +1,7 @@
 package model
 
 import (
-	"time"
-
+	"github.com/kaixinhupo/quick/infrastruture/core"
 	"github.com/kaixinhupo/quick/infrastruture/web"
 )
 
@@ -23,6 +22,6 @@ type UserDetailResp struct {
 	Id        int64  `json:"id"` //ID
 	Username  string `json:"username"` //用户名
 	Password  string `json:"password"` //密码
-	CreatedAt time.Time `json:"createdAt"` //创建时间
-	UpdatedAt time.Time `json:"updatedAt"` //修改时间
+	CreatedAt core.LocalTime `json:"createdAt"` //创建时间
+	UpdatedAt core.LocalTime `json:"updatedAt"` //修改时间
 }

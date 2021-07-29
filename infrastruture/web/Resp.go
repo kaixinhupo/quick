@@ -89,7 +89,7 @@ func WrapSuccess() mvc.Result {
 		Message: "success",
 	}
 
-	return mvc.Response{
+	return mvc.Response {
 		ContentType: "application/json",
 		Object:      resp,
 	}
@@ -114,7 +114,7 @@ func WrapError(err error) mvc.Result {
 }
 
 func WrapResp(resp interface{}) mvc.Result {
-	return mvc.Response{
+	return mvc.Response {
 		ContentType: "application/json",
 		Object:      resp,
 	}
