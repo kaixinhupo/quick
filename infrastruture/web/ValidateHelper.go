@@ -17,7 +17,7 @@ func ValidateRequest(req interface{}) mvc.Result {
 		if errs, ok := err.(validator.ValidationErrors); ok {
 			validationErrors := wrapValidationErrors(errs)
 			return	mvc.Response {
-				Code: iris.StatusBadRequest,
+				Code: iris.StatusUnprocessableEntity,
 				Object: NewErrorResp().
 					WithMessage("参数错误").
 					WithCode(CodeInvalidParam).

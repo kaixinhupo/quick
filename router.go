@@ -13,7 +13,7 @@ var routers = [...]web.RouteController {
 	InitUserController(),
 }
 
-// 初始化路由
+// 注册路由
 func ConfigureRouter(app *iris.Application) {
 	for _, c := range routers {
 		p := c.Route()

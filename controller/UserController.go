@@ -11,7 +11,7 @@ import (
 )
 
 type UserController struct{
-	userService contract.UserService
+	us contract.UserService
 }
 
 
@@ -33,9 +33,12 @@ func (m *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Resu
         return rst
 	}
 
-	list := make([]int64,16)  
+	list,err := m.us.Query(&param); if err != nil {
+		log.Println("query error",err)
+		return nil
+	}
 
-	return web.WrapPage(list,10,1)
+	return web.WrapResp(list)
 }
 
 // @Summary 创建用户记录
@@ -47,10 +50,18 @@ func (m *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Resu
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user [post]
-func (m *UserController) Post(ctx iris.Context,param model.UserInfoReq) model.UserDetailResp {
-	return model.UserDetailResp{
-		Id: 1,
+func (m *UserController) Post(ctx iris.Context,param model.UserInfoReq) mvc.Result {
+
+	rst := web.ValidateRequest(param)
+	if rst != nil {
+        return rst
 	}
+
+	udr, err := m.us.CreateUser(&param);if err != nil {
+		return web.WrapError(err)
+		
+	}
+	return web.WrapResp(udr)
 }
 
 
@@ -136,6 +147,6 @@ func (c UserController) Route() string {
 // 构造器
 func NewUserController(userService contract.UserService) *UserController {
 	return &UserController {
-		userService: userService,
+		us: userService,
 	}
 }

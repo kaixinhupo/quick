@@ -10,6 +10,8 @@ import (
 	"github.com/kaixinhupo/quick/controller"
 	"github.com/kaixinhupo/quick/dao/database"
 	"github.com/kaixinhupo/quick/dao/repository"
+	"github.com/kaixinhupo/quick/infrastruture/config"
+	"github.com/kaixinhupo/quick/infrastruture/db"
 	"github.com/kaixinhupo/quick/service/biz"
 	"github.com/kaixinhupo/quick/service/contract"
 )
@@ -21,14 +23,21 @@ import (
 // Injectors from wire.go:
 
 func InitUserController() *controller.UserController {
-	userRepositoryImpl := database.NewUserRepository()
-	userServiceImpl := biz.NewUserService(userRepositoryImpl)
+	xormConfig := config.DatasourceConfig()
+	engine := db.DefaultEngine(xormConfig)
+	userRepositoryImpl := database.NewUserRepository(engine)
+	userServiceImpl := biz.NewUserService(userRepositoryImpl, engine)
 	userController := controller.NewUserController(userServiceImpl)
 	return userController
 }
 
 // wire.go:
 
+// xorm engine
+var xormEngineSet = wire.NewSet(config.DatasourceConfig, db.DefaultEngine)
+
+// repository.UserRepository
 var userRepositorySet = wire.NewSet(database.NewUserRepository, wire.Bind(new(repository.UserRepository), new(*database.UserRepositoryImpl)))
 
+// contract.UserService
 var userServiceSet = wire.NewSet(biz.NewUserService, wire.Bind(new(contract.UserService), new(*biz.UserServiceImpl)))

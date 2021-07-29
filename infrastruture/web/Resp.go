@@ -1,9 +1,15 @@
 package web
 
-import "github.com/kataras/iris/v12/mvc"
+import (
+	e "github.com/kaixinhupo/quick/infrastruture/error"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
+)
+
 
 const (
 	CodeInvalidParam = 10400
+	CodeUnknowError = 10500
 )
 
 type ValidationError struct {
@@ -17,12 +23,12 @@ type ValidationError struct {
 type PageResp struct {
 	Records interface{} `json:"records"` //记录
 	Total   int64       `json:"total"`   //总记录数
-	No      int16       `json:"no"`      //页号
+	No      int       	`json:"no"`      //页号
 }
 
 type PageParam struct {
-	No   int16 `json:"no"`   // 页号
-	Size int16 `json:"size"` // 分页大小
+	No   int `json:"no"`   // 页号
+	Size int `json:"size"` // 分页大小
 }
 
 type ErrorResp struct {
@@ -64,14 +70,14 @@ func (e ErrorResp) AppendError(key string, value interface{}) ErrorResp {
 	return e
 }
 
-func WrapPage(records interface{}, total int64, current int16) mvc.Result {
+func WrapPage(records interface{}, total int64, current int) mvc.Result {
 	page := PageResp{
 		Records: records,
 		Total:   total,
 		No:      current,
 	}
 
-	return mvc.Response{
+	return mvc.Response {
 		ContentType: "application/json",
 		Object:      page,
 	}
@@ -86,6 +92,24 @@ func WrapSuccess() mvc.Result {
 	return mvc.Response{
 		ContentType: "application/json",
 		Object:      resp,
+	}
+}
+
+func WrapError(err error) mvc.Result {
+	resp := NewErrorResp()
+
+	if err, ok := err.(*e.BizError); ok {
+		resp.Code = int16(err.Code)
+		resp.Message = err.Message
+	} else {
+		resp.Code = CodeUnknowError
+		resp.Message ="未知错误"
+		resp.AppendError("err",err)
+	}
+	return mvc.Response{
+		ContentType: "application/json",
+		Code: iris.StatusBadRequest,
+		Object: resp,
 	}
 }
 
