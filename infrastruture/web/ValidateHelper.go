@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-playground/validator"
+	"github.com/kaixinhupo/quick/infrastruture/core"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 )
@@ -20,7 +21,7 @@ func ValidateRequest(req interface{}) mvc.Result {
 				Code: iris.StatusUnprocessableEntity,
 				Object: NewErrorResp().
 					WithMessage("参数错误").
-					WithCode(CodeInvalidParam).
+					WithCode(core.CodeInvalidParam).
 					AppendError("detail",validationErrors),
 			}
 		}

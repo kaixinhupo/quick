@@ -1,15 +1,10 @@
 package web
 
 import (
-	e "github.com/kaixinhupo/quick/infrastruture/error"
+	"github.com/kaixinhupo/quick/infrastruture/core"
+	e "github.com/kaixinhupo/quick/infrastruture/errors"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
-)
-
-
-const (
-	CodeInvalidParam = 10400
-	CodeUnknowError = 10500
 )
 
 type ValidationError struct {
@@ -102,7 +97,7 @@ func WrapError(err error) mvc.Result {
 		resp.Code = int16(err.Code)
 		resp.Message = err.Message
 	} else {
-		resp.Code = CodeUnknowError
+		resp.Code = core.CodeUnknowError
 		resp.Message ="未知错误"
 		resp.AppendError("err",err)
 	}

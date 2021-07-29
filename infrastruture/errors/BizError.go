@@ -1,11 +1,11 @@
-package error
+package errors
 
 type BizError struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
-func (e *BizError) Error() string {
+func (e BizError) Error() string {
 	return e.Message
 }
 

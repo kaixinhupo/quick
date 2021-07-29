@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"log"
-
 	"github.com/kaixinhupo/quick/infrastruture/web"
 	"github.com/kaixinhupo/quick/model"
 	"github.com/kaixinhupo/quick/service/contract"
@@ -10,7 +8,7 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 )
 
-type UserController struct{
+type UserController struct {
 	us contract.UserService
 }
 
@@ -25,17 +23,14 @@ type UserController struct{
 // @Success 200 {object} web.PageResp{records=[]model.UserDetailResp}
 // @Failure 400 {object} web.ErrorResp
 // @Router /user [get]
-func (m *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Result {
-	log.Println("GET /user param:",param)
-
+func (c *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Result {
 	rst := web.ValidateRequest(param)
 	if rst != nil {
         return rst
 	}
 
-	list,err := m.us.Query(&param); if err != nil {
-		log.Println("query error",err)
-		return nil
+	list,err := c.us.Query(&param); if err != nil {
+		return web.WrapError(err)
 	}
 
 	return web.WrapResp(list)
@@ -50,18 +45,16 @@ func (m *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Resu
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user [post]
-func (m *UserController) Post(ctx iris.Context,param model.UserInfoReq) mvc.Result {
-
-	rst := web.ValidateRequest(param)
-	if rst != nil {
-        return rst
+func (c *UserController) Post(ctx iris.Context,param model.UserInfoReq) mvc.Result {
+	invalid := web.ValidateRequest(param); if invalid != nil {
+        return invalid
 	}
 
-	udr, err := m.us.CreateUser(&param);if err != nil {
+	vo, err := c.us.Create(&param); if err != nil {
 		return web.WrapError(err)
 		
 	}
-	return web.WrapResp(udr)
+	return web.WrapResp(vo)
 }
 
 
@@ -73,10 +66,11 @@ func (m *UserController) Post(ctx iris.Context,param model.UserInfoReq) mvc.Resu
 // @Success 200 {object} model.UserDetailResp
 // @Failure 404 
 // @Router /user/{id} [get]
-func (m *UserController) GetBy(ctx iris.Context,id int64) model.UserDetailResp {
-	return model.UserDetailResp{
-		Id: 1,
+func (c *UserController) GetBy(ctx iris.Context,id int64) mvc.Result {
+	vo, err := c.us.Item(id); if err != nil {
+		return web.WrapError(err)
 	}
+	return web.WrapResp(vo)
 }
 
 
@@ -91,10 +85,16 @@ func (m *UserController) GetBy(ctx iris.Context,id int64) model.UserDetailResp {
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user/{id} [put]
-func (m *UserController) PutBy(ctx iris.Context,id int64,param model.UserInfoReq) model.UserDetailResp {
-	return model.UserDetailResp{
-		Id: 1,
+func (c *UserController) PutBy(ctx iris.Context,id int64,param model.UserInfoReq) mvc.Result {
+	invalid := web.ValidateRequest(param); if invalid != nil {
+        return invalid
 	}
+
+	vo, err := c.us.Update(id, &param); if err != nil {
+		return web.WrapError(err)
+		
+	}
+	return web.WrapResp(vo)
 }
 
 // @Summary 修改用户记录
@@ -107,10 +107,16 @@ func (m *UserController) PutBy(ctx iris.Context,id int64,param model.UserInfoReq
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user/{id} [patch]
-func (m *UserController) PatchBy(ctx iris.Context,id int64,param model.UserInfoReq) model.UserDetailResp {
-	return model.UserDetailResp{
-		Id: 1,
+func (c *UserController) PatchBy(ctx iris.Context,id int64,param model.UserInfoReq) mvc.Result {
+	invalid := web.ValidateRequest(param); if invalid != nil {
+        return invalid
 	}
+
+	vo, err := c.us.Patch(id, &param); if err != nil {
+		return web.WrapError(err)
+		
+	}
+	return web.WrapResp(vo)
 }
 
 // @Summary 删除用户记录
@@ -121,7 +127,10 @@ func (m *UserController) PatchBy(ctx iris.Context,id int64,param model.UserInfoR
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user/{id} [delete]
-func (m *UserController) DeleteBy(ctx iris.Context,id int64) mvc.Result {
+func (c *UserController) DeleteBy(ctx iris.Context,id int64) mvc.Result {
+	err := c.us.Delete(id); if err != nil {
+		return web.WrapError(err)
+	}
 	return web.WrapSuccess()
 }
 

@@ -46,6 +46,35 @@ func (impl *UserRepositoryImpl) List(param *model.UserQueryReq, session *xorm.Se
 	return list
 }
 
+func (impl *UserRepositoryImpl) Entry(id int64, session *xorm.Session) *entity.UserEntity {
+	s:= db.OpenSession(impl.engine,session,"t")
+	entity := &entity.UserEntity{}
+	found, err := s.ID(id).Get(entity); if err != nil {
+		log.Printf("entry for key:%d not found,err:%s \n",id,err.Error())
+		return nil
+	}
+	if !found {
+		return nil
+	}
+	return entity
+}
+
+
+func (impl *UserRepositoryImpl) Update(entity *entity.UserEntity, allFields bool, session *xorm.Session) (int64, error){
+	s:= db.OpenSession(impl.engine,session,"t")
+	if allFields {
+		return s.ID(entity.Id).AllCols().Update(entity)
+	} else {
+		return s.ID(entity.Id).Update(entity)
+	}
+}
+
+func (impl *UserRepositoryImpl) Delete(id int64, session *xorm.Session) error{
+	s:= db.OpenSession(impl.engine,session,"t")
+	_, err := s.ID(id).Delete(new(entity.UserEntity))
+	return err
+}
+
 func (impl *UserRepositoryImpl) createFilter(param *model.UserQueryReq, page bool,session *xorm.Session) *xorm.Session {
 	s:=db.OpenSession(impl.engine,session,"t")
 	if param.Username !="" {
