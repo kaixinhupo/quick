@@ -31,6 +31,12 @@ func InitUserController() *controller.UserController {
 	return userController
 }
 
+func InitGenController() *controller.GenController {
+	genConfig := config.GenerateConfig()
+	genController := controller.NewGenController(genConfig)
+	return genController
+}
+
 // wire.go:
 
 // xorm engine

@@ -13,6 +13,7 @@ require (
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gobwas/ws v1.1.0 // indirect
+	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
 	github.com/iris-contrib/swagger/v12 v12.2.0-alpha
 	github.com/jinzhu/copier v0.3.2

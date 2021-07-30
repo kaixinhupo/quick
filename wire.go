@@ -37,3 +37,8 @@ func InitUserController() *controller.UserController {
 	wire.Build(xormEngineSet,userRepositorySet,userServiceSet,controller.NewUserController)
 	return &controller.UserController{}
 }
+
+func InitGenController() *controller.GenController {
+	wire.Build(config.GenerateConfig,controller.NewGenController)
+	return &controller.GenController{}
+}

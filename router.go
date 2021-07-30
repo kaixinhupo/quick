@@ -11,6 +11,7 @@ import (
 // 控制器列表
 var routers = [...]web.RouteController {
 	InitUserController(),
+	InitGenController(),
 }
 
 // 注册路由
