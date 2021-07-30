@@ -33,7 +33,8 @@ func InitUserController() *controller.UserController {
 
 func InitGenController() *controller.GenController {
 	genConfig := config.GenerateConfig()
-	genController := controller.NewGenController(genConfig)
+	gencodeServiceImpl := biz.NewGencodeService(genConfig)
+	genController := controller.NewGenController(gencodeServiceImpl)
 	return genController
 }
 
@@ -47,3 +48,5 @@ var userRepositorySet = wire.NewSet(database.NewUserRepository, wire.Bind(new(re
 
 // contract.UserService
 var userServiceSet = wire.NewSet(biz.NewUserService, wire.Bind(new(contract.UserService), new(*biz.UserServiceImpl)))
+
+var gencodeServiceSet = wire.NewSet(biz.NewGencodeService, wire.Bind(new(contract.GencodeService), new(*biz.GencodeServiceImpl)))

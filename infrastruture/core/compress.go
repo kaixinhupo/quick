@@ -48,6 +48,7 @@ func compress(file *os.File, prefix string, zw *zip.Writer) error {
 	} else {
 		header, err := zip.FileInfoHeader(info)
 		header.Name = prefix + "/" + header.Name
+		header.Method = zip.Deflate
 		if err != nil {
 			return err
 		}
