@@ -1,3 +1,6 @@
 [xorm]
 datasourceType = "mysql"
 datasourceName = "quick:Quick!0729@tcp(123.57.235.86:13307)/quick?charset=utf8mb4&collation=utf8mb4_unicode_ci"
+
+[gen]
+module = "github.com/kaixinhupo/quick"

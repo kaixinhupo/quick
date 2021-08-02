@@ -10,12 +10,16 @@ type TableMeta struct {
 }
 
 type FieldMeta struct {
-	Col          string
-	ColType      string
-	ColLen       int
-	ColComment   string
-	ColNull      bool
-	ColPk        bool
-	Property     string
-	PropertyType string
+	Col           string
+	ColType       string
+	ColLen        int
+	ColComment    string
+	ColNull       bool
+	ColPk         bool
+	ColNested     bool
+	ColCreate     bool
+	ColUpdate     bool
+	Property      string
+	PropertyType  string
+	PropertyCamel string
 }

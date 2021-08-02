@@ -9,7 +9,7 @@ import (
 )
 
 type UserController struct {
-	us contract.UserService
+	svc contract.UserService
 }
 
 
@@ -29,7 +29,7 @@ func (c *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Resu
         return rst
 	}
 
-	list,err := c.us.Query(&param); if err != nil {
+	list,err := c.svc.Query(&param); if err != nil {
 		return web.WrapError(err)
 	}
 
@@ -50,7 +50,7 @@ func (c *UserController) Post(ctx iris.Context,param model.UserInfoReq) mvc.Resu
         return invalid
 	}
 
-	vo, err := c.us.Create(&param); if err != nil {
+	vo, err := c.svc.Create(&param); if err != nil {
 		return web.WrapError(err)
 		
 	}
@@ -67,7 +67,7 @@ func (c *UserController) Post(ctx iris.Context,param model.UserInfoReq) mvc.Resu
 // @Failure 404 
 // @Router /user/{id} [get]
 func (c *UserController) GetBy(ctx iris.Context,id int64) mvc.Result {
-	vo, err := c.us.Item(id); if err != nil {
+	vo, err := c.svc.Item(id); if err != nil {
 		return web.WrapError(err)
 	}
 	return web.WrapResp(vo)
@@ -90,7 +90,7 @@ func (c *UserController) PutBy(ctx iris.Context,id int64,param model.UserInfoReq
         return invalid
 	}
 
-	vo, err := c.us.Update(id, &param); if err != nil {
+	vo, err := c.svc.Update(id, &param); if err != nil {
 		return web.WrapError(err)
 		
 	}
@@ -112,7 +112,7 @@ func (c *UserController) PatchBy(ctx iris.Context,id int64,param model.UserInfoR
         return invalid
 	}
 
-	vo, err := c.us.Patch(id, &param); if err != nil {
+	vo, err := c.svc.Patch(id, &param); if err != nil {
 		return web.WrapError(err)
 		
 	}
@@ -128,7 +128,7 @@ func (c *UserController) PatchBy(ctx iris.Context,id int64,param model.UserInfoR
 // @Failure 400 {object} web.ErrorResp
 // @Router /user/{id} [delete]
 func (c *UserController) DeleteBy(ctx iris.Context,id int64) mvc.Result {
-	err := c.us.Delete(id); if err != nil {
+	err := c.svc.Delete(id); if err != nil {
 		return web.WrapError(err)
 	}
 	return web.WrapSuccess()
@@ -156,6 +156,6 @@ func (c UserController) Route() string {
 // 构造器
 func NewUserController(userService contract.UserService) *UserController {
 	return &UserController {
-		us: userService,
+		svc: userService,
 	}
 }

@@ -60,8 +60,11 @@ type XormConfig struct {
 }
 
 type GenConfig struct {
+	Module string `toml:"module"`
 	TemplateDir string `toml:"templateDir"`
 	OutputDir string `toml:"outputDir"`
+	CreateTimeCol string `toml:"createTimeCol"`
+	UpdateTimeCol string `toml:"updateTimeCol"`
 	isInit bool
 }
 
@@ -75,6 +78,12 @@ func (gc *GenConfig) initGen() {
 		if gc.OutputDir == "" {
 			output := filepath.Join(dir,"output")
 			gc.OutputDir, _ = filepath.Abs(output)
+		}
+		if gc.CreateTimeCol == "" {
+			gc.CreateTimeCol = "created_at"
+		}
+		if gc.UpdateTimeCol == "" {
+			gc.UpdateTimeCol = "updated_at"
 		}
 		gc.isInit = true
 	}

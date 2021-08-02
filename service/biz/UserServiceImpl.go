@@ -19,7 +19,7 @@ type UserServiceImpl struct {
 
 func NewUserService(repo repository.UserRepository,engine *xorm.Engine) *UserServiceImpl {
 	return &UserServiceImpl {
-		repo:repo ,
+		repo: repo ,
 		engine: engine,
 	}
 }
@@ -37,6 +37,7 @@ func (impl *UserServiceImpl) Query(req *model.UserQueryReq) (*web.PageResp, erro
 		No: req.Page.No,
 	}, nil
 }
+
 // 查询单条记录
 func (impl *UserServiceImpl) Item(id int64) (*model.UserDetailResp, error) {
 	entity := impl.repo.Entry(id, nil)

@@ -1,5 +1,5 @@
 // copy to wire.go
-
+{{#with Meta}}
 // repository.{{ModelName}}Repository
 var {{ModelNameLower}}RepositorySet = wire.NewSet(
     database.New{{ModelName}}Repository, 
@@ -22,3 +22,5 @@ func Init{{ModelName}}Controller() *controller.{{ModelName}}Controller {
 // copy to router.go
 
 Init{{ModelName}}Controller(),
+
+{{/with}}

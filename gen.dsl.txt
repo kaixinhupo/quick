@@ -2,7 +2,8 @@
     "TableName":"user",                   //database table name
     "TableComment":"用户",                //database table comment
     "ModelName":"User",                   //model name
-    "ModelNameLower":"user",              //model name which first letter is lower case 
+    "ModelNameLower":"user",              //model name which first letter is lower case
+    "BasePath":"/user",                   //base url path
     "Fields": [
         {
             "Col":"id",                   //table column
@@ -10,8 +11,13 @@
             "ColLen":0,                   //column length
             "ColComment":"ID",            //column comment
             "ColNull":false,              //column is null ?
+            "ColPk":true                  //primary key
+            "ColCreate":false             //create time column
+            "ColUpdate":false             //update time column
+            "ColNested":true              //ColPk or ColCreate or ColUpdate
             "Property":"Id",              //model property
             "PropertyType":"int64",       //model property type
+            "PropertyCamel":"id",         //model property camel format with first char in lower case
         }
     ]
 }

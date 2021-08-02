@@ -20,11 +20,11 @@ func NewUserRepository(engine *xorm.Engine) *UserRepositoryImpl {
 	}
 }
 
-func (impl *UserRepositoryImpl) Insert(user *entity.UserEntity, session *xorm.Session) (*entity.UserEntity, error) {
-	_, err := impl.engine.InsertOne(user); if err != nil {
+func (impl *UserRepositoryImpl) Insert(entity *entity.UserEntity, session *xorm.Session) (*entity.UserEntity, error) {
+	_, err := impl.engine.InsertOne(entity); if err != nil {
 		return nil, err
 	}
-	return user,nil
+	return entity,nil
 }
 
 func (impl *UserRepositoryImpl) Count(param *model.UserQueryReq, session *xorm.Session) (int64) {

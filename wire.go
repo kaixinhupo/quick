@@ -37,8 +37,6 @@ var gencodeServiceSet = wire.NewSet(
     wire.Bind(new (contract.GencodeService),new (*biz.GencodeServiceImpl)),
 )
 
-
-
 func InitUserController() *controller.UserController {
 	wire.Build(xormEngineSet,userRepositorySet,userServiceSet,controller.NewUserController)
 	return &controller.UserController{}
