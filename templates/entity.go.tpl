@@ -1,8 +1,10 @@
 package entity
 
+{{#with Config}}
 import (
-    "{{Module}}/infrastruture/core"
+  "{{Module}}/infrastruture/core"
 )
+{{/with}}
 
 {{#with Meta}}
 type {{ModelName}}Entity struct {

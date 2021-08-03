@@ -34,7 +34,10 @@ func InitUserController() *controller.UserController {
 func InitGenController() *controller.GenController {
 	genConfig := config.GenerateConfig()
 	gencodeServiceImpl := biz.NewGencodeService(genConfig)
-	genController := controller.NewGenController(gencodeServiceImpl)
+	xormConfig := config.DatasourceConfig()
+	engine := db.DefaultEngine(xormConfig)
+	databaseMetaServiceImpl := biz.NewDatabaseMetaService(engine, genConfig)
+	genController := controller.NewGenController(gencodeServiceImpl, databaseMetaServiceImpl)
 	return genController
 }
 
@@ -50,3 +53,5 @@ var userRepositorySet = wire.NewSet(database.NewUserRepository, wire.Bind(new(re
 var userServiceSet = wire.NewSet(biz.NewUserService, wire.Bind(new(contract.UserService), new(*biz.UserServiceImpl)))
 
 var gencodeServiceSet = wire.NewSet(biz.NewGencodeService, wire.Bind(new(contract.GencodeService), new(*biz.GencodeServiceImpl)))
+
+var databaseMetaServiceSet = wire.NewSet(biz.NewDatabaseMetaService, wire.Bind(new(contract.DatabaseMetaService), new(*biz.DatabaseMetaServiceImpl)))

@@ -78,6 +78,11 @@ func (impl *{{ModelName}}RepositoryImpl) Delete(id int64, session *xorm.Session)
 
 func (impl *{{ModelName}}RepositoryImpl) createFilter(param *model.{{ModelName}}QueryReq, page bool,session *xorm.Session) *xorm.Session {
 	s := db.OpenSession(impl.engine,session,"t")
+	{{#each Queries}}
+	if param.{{Property}} != {{{PropertyNullValue}}} {
+		s.{{#if First}}Where{{else}}And{{/if}}("t.{{Col}}=?",param.{{Property}})
+	}
+	{{/each}}
 	if page {
 		size,offset := db.CalcLimit(&param.Page)
 		s.Limit(size,offset)

@@ -15,6 +15,7 @@ require (
 	github.com/gobwas/ws v1.1.0 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
+	github.com/iancoleman/strcase v0.2.0
 	github.com/iris-contrib/swagger/v12 v12.2.0-alpha
 	github.com/jinzhu/copier v0.3.2
 	github.com/kataras/iris/v12 v12.2.0-alpha2.0.20210717090056-b2cc3a287149

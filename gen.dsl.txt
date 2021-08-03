@@ -14,7 +14,7 @@
             "ColPk":true                  //primary key
             "ColCreate":false             //create time column
             "ColUpdate":false             //update time column
-            "ColNested":true              //ColPk or ColCreate or ColUpdate
+            "ColSystem":true              //ColPk or ColCreate or ColUpdate
             "Property":"Id",              //model property
             "PropertyType":"int64",       //model property type
             "PropertyCamel":"id",         //model property camel format with first char in lower case

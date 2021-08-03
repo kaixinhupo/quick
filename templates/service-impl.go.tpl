@@ -92,7 +92,7 @@ func (impl *{{ModelName}}ServiceImpl) update(id int64, req *model.{{ModelName}}I
 	if err := session.Commit(); err != nil {
         return nil, err
     }
-	vo := & model.{{ModelName}}DetailResp{}
+	vo := &model.{{ModelName}}DetailResp{}
 	copier.Copy(vo,entity) 
 	return vo, nil
 }

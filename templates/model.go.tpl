@@ -9,10 +9,9 @@ import (
 // 创建请求参数
 type {{ModelName}}InfoReq struct {
 	{{#each Fields}}
-	{{#if ColNested}}
-	{{else}}
+	{{#unless ColSystem}}
 	{{Property}} {{PropertyType}} `json:"{{PropertyCamel}}"` //{{ColComment}}
-	{{/if}}
+	{{/unless}}
 	{{/each}}
 }
 
@@ -20,10 +19,9 @@ type {{ModelName}}InfoReq struct {
 type {{ModelName}}QueryReq struct {
 	Page web.PageParam `json:"page"` // 分页
 	{{#each Fields}}
-	{{#if ColNested}}
-	{{else}}
+	{{#unless ColSystem}}
 	{{Property}} {{PropertyType}} `json:"{{PropertyCamel}}"` //{{ColComment}}
-	{{/if}}
+	{{/unless}}
 	{{/each}}
 }
 
