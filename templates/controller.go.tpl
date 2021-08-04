@@ -1,7 +1,7 @@
 package controller
 {{#with Config}}
 import (
-	"{{Module}}/infrastruture/web"
+	"{{Module}}/infrastructure/web"
 	"{{Module}}/model"
 	"{{Module}}/service/contract"
 	"github.com/kataras/iris/v12"
@@ -13,7 +13,7 @@ type {{ModelName}}Controller struct {
 	svc contract.{{ModelName}}Service
 }
 
-
+// Get 获取{{TableComment}}分页列表
 // @Summary 获取{{TableComment}}分页列表
 // @Description 
 // @Tags　{{TableComment}}管理
@@ -37,6 +37,7 @@ func (c *{{ModelName}}Controller) Get(ctx iris.Context,param model.{{ModelName}}
 	return web.WrapResp(list)
 }
 
+// Post 创建{{TableComment}}记录
 // @Summary 创建{{TableComment}}记录
 // @Description 
 // @Tags　{{TableComment}}管理
@@ -58,7 +59,7 @@ func (c *{{ModelName}}Controller) Post(ctx iris.Context,param model.{{ModelName}
 	return web.WrapResp(vo)
 }
 
-
+// GetBy 获取单个{{TableComment}}记录
 // @Summary 获取单个{{TableComment}}记录
 // @Description 
 // @Tags　{{TableComment}}管理
@@ -75,7 +76,7 @@ func (c *{{ModelName}}Controller) GetBy(ctx iris.Context,id int64) mvc.Result {
 }
 
 
-
+// PutBy 更新{{TableComment}}记录
 // @Summary 更新{{TableComment}}记录
 // @Description 
 // @Tags　{{TableComment}}管理
@@ -98,6 +99,7 @@ func (c *{{ModelName}}Controller) PutBy(ctx iris.Context,id int64,param model.{{
 	return web.WrapResp(vo)
 }
 
+// PatchBy 修改{{TableComment}}记录
 // @Summary 修改{{TableComment}}记录
 // @Description 
 // @Tags　{{TableComment}}管理
@@ -120,6 +122,7 @@ func (c *{{ModelName}}Controller) PatchBy(ctx iris.Context,id int64,param model.
 	return web.WrapResp(vo)
 }
 
+// DeleteBy 删除{{TableComment}}记录
 // @Summary 删除{{TableComment}}记录
 // @Description 
 // @Tags　{{TableComment}}管理
@@ -149,12 +152,12 @@ func (m *{{ModelName}}Controller) BeforeActivation(b mvc.BeforeActivation) {
 }
 */
 
-// 返回路由根路径
+// Route 返回路由根路径
 func (c {{ModelName}}Controller) Route() string {
 	return "{{BasePath}}"
 }
 
-// 构造器
+// New{{ModelName}}Controller 构造器
 func New{{ModelName}}Controller(svc contract.{{ModelName}}Service) *{{ModelName}}Controller {
 	return &{{ModelName}}Controller {
 		svc: svc,

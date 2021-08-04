@@ -1,8 +1,8 @@
 package web
 
 import (
-	"github.com/kaixinhupo/quick/infrastruture/core"
-	e "github.com/kaixinhupo/quick/infrastruture/errors"
+	"github.com/kaixinhupo/quick/infrastructure/core"
+	e "github.com/kaixinhupo/quick/infrastructure/errors"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 )
@@ -18,7 +18,7 @@ type ValidationError struct {
 type PageResp struct {
 	Records interface{} `json:"records"` //记录
 	Total   int64       `json:"total"`   //总记录数
-	No      int       	`json:"no"`      //页号
+	No      int         `json:"no"`      //页号
 }
 
 type PageParam struct {
@@ -72,7 +72,7 @@ func WrapPage(records interface{}, total int64, current int) mvc.Result {
 		No:      current,
 	}
 
-	return mvc.Response {
+	return mvc.Response{
 		ContentType: "application/json",
 		Object:      page,
 	}
@@ -84,7 +84,7 @@ func WrapSuccess() mvc.Result {
 		Message: "success",
 	}
 
-	return mvc.Response {
+	return mvc.Response{
 		ContentType: "application/json",
 		Object:      resp,
 	}
@@ -97,19 +97,19 @@ func WrapError(err error) mvc.Result {
 		resp.Code = int16(err.Code)
 		resp.Message = err.Message
 	} else {
-		resp.Code = core.CodeUnknowError
-		resp.Message ="未知错误"
-		resp.AppendError("err",err)
+		resp.Code = core.CodeUnknownError
+		resp.Message = "未知错误"
+		resp.AppendError("err", err)
 	}
 	return mvc.Response{
 		ContentType: "application/json",
-		Code: iris.StatusBadRequest,
-		Object: resp,
+		Code:        iris.StatusBadRequest,
+		Object:      resp,
 	}
 }
 
 func WrapResp(resp interface{}) mvc.Result {
-	return mvc.Response {
+	return mvc.Response{
 		ContentType: "application/json",
 		Object:      resp,
 	}

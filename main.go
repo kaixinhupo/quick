@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/kataras/iris/v12"
+	"log"
 
 	_ "github.com/kaixinhupo/quick/docs"
 )
@@ -18,5 +19,9 @@ func main() {
 	app := iris.New()
 	ConfigureRouter(app)
 	configSwagger(app)
-	app.Run(iris.Addr(":8080"))
+	err := app.Run(iris.Addr(":8080"))
+	if err != nil {
+		log.Println("start fail:", err.Error())
+		return
+	}
 }

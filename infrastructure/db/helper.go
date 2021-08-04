@@ -1,16 +1,15 @@
 package db
 
 import (
-	"github.com/kaixinhupo/quick/infrastruture/web"
+	"github.com/kaixinhupo/quick/infrastructure/web"
 	"xorm.io/xorm"
 )
 
-
 func CalcLimit(page *web.PageParam) (int, int) {
-	var no int 
-	var size int 
+	var no int
+	var size int
 	if page.No < 1 {
-		no =1
+		no = 1
 	} else {
 		no = page.No
 	}
@@ -19,11 +18,11 @@ func CalcLimit(page *web.PageParam) (int, int) {
 	} else {
 		size = page.Size
 	}
-	offset := (no-1) * size
-	return size,offset
+	offset := (no - 1) * size
+	return size, offset
 }
 
-func OpenSession(engine *xorm.Engine,session *xorm.Session,tableAlias string) *xorm.Session {
+func OpenSession(engine *xorm.Engine, session *xorm.Session, tableAlias string) *xorm.Session {
 	var s *xorm.Session
 	if session != nil {
 		s = session

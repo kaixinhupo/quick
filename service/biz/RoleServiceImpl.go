@@ -11,26 +11,26 @@ import (
 	"xorm.io/xorm"
 )
 
-type UserServiceImpl struct {
+type RoleServiceImpl struct {
 	engine *xorm.Engine
-	repo   repository.UserRepository
+	repo   repository.RoleRepository
 }
 
-func NewUserService(repo repository.UserRepository, engine *xorm.Engine) *UserServiceImpl {
-	return &UserServiceImpl{
+func NewRoleService(repo repository.RoleRepository, engine *xorm.Engine) *RoleServiceImpl {
+	return &RoleServiceImpl{
 		repo:   repo,
 		engine: engine,
 	}
 }
 
-func (impl *UserServiceImpl) Query(req *model.UserQueryReq) (*web.PageResp, error) {
+func (impl *RoleServiceImpl) Query(req *model.RoleQueryReq) (*web.PageResp, error) {
 	session := impl.engine.NewSession()
 	defer func(session *xorm.Session) {
 		_ = session.Close()
 	}(session)
 	total := impl.repo.Count(req, session)
 	records := impl.repo.List(req, session)
-	vos := make([]*model.UserDetailResp, len(records))
+	vos := make([]*model.RoleDetailResp, len(records))
 	err := copier.Copy(&vos, &records)
 	if err != nil {
 		return nil, err
@@ -42,12 +42,12 @@ func (impl *UserServiceImpl) Query(req *model.UserQueryReq) (*web.PageResp, erro
 	}, nil
 }
 
-func (impl *UserServiceImpl) Item(id int64) (*model.UserDetailResp, error) {
+func (impl *RoleServiceImpl) Item(id int64) (*model.RoleDetailResp, error) {
 	item := impl.repo.Entry(id, nil)
 	if item == nil {
 		return nil, es.NewBizError(core.CodeNotFound, "记录不存在")
 	}
-	vo := &model.UserDetailResp{}
+	vo := &model.RoleDetailResp{}
 	err := copier.Copy(vo, item)
 	if err != nil {
 		return nil, err
@@ -55,8 +55,8 @@ func (impl *UserServiceImpl) Item(id int64) (*model.UserDetailResp, error) {
 	return vo, nil
 }
 
-func (impl *UserServiceImpl) Create(req *model.UserInfoReq) (*model.UserDetailResp, error) {
-	item := &entity.UserEntity{}
+func (impl *RoleServiceImpl) Create(req *model.RoleInfoReq) (*model.RoleDetailResp, error) {
+	item := &entity.RoleEntity{}
 	err := copier.Copy(item, req)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (impl *UserServiceImpl) Create(req *model.UserInfoReq) (*model.UserDetailRe
 	if err != nil {
 		return nil, err
 	}
-	rst := &model.UserDetailResp{}
+	rst := &model.RoleDetailResp{}
 	err = copier.Copy(rst, item)
 	if err != nil {
 		return nil, err
@@ -73,15 +73,15 @@ func (impl *UserServiceImpl) Create(req *model.UserInfoReq) (*model.UserDetailRe
 	return rst, nil
 }
 
-func (impl *UserServiceImpl) Update(id int64, req *model.UserInfoReq) (*model.UserDetailResp, error) {
+func (impl *RoleServiceImpl) Update(id int64, req *model.RoleInfoReq) (*model.RoleDetailResp, error) {
 	return impl.update(id, req, true)
 }
 
-func (impl *UserServiceImpl) Patch(id int64, req *model.UserInfoReq) (*model.UserDetailResp, error) {
+func (impl *RoleServiceImpl) Patch(id int64, req *model.RoleInfoReq) (*model.RoleDetailResp, error) {
 	return impl.update(id, req, false)
 }
 
-func (impl *UserServiceImpl) update(id int64, req *model.UserInfoReq, all bool) (*model.UserDetailResp, error) {
+func (impl *RoleServiceImpl) update(id int64, req *model.RoleInfoReq, all bool) (*model.RoleDetailResp, error) {
 	session := impl.engine.NewSession()
 	defer func(session *xorm.Session) {
 		_ = session.Close()
@@ -104,7 +104,7 @@ func (impl *UserServiceImpl) update(id int64, req *model.UserInfoReq, all bool) 
 	if err := session.Commit(); err != nil {
 		return nil, err
 	}
-	vo := &model.UserDetailResp{}
+	vo := &model.RoleDetailResp{}
 	err = copier.Copy(vo, item)
 	if err != nil {
 		return nil, err
@@ -112,6 +112,6 @@ func (impl *UserServiceImpl) update(id int64, req *model.UserInfoReq, all bool) 
 	return vo, nil
 }
 
-func (impl *UserServiceImpl) Delete(id int64) error {
+func (impl *RoleServiceImpl) Delete(id int64) error {
 	return impl.repo.Delete(id, nil)
 }

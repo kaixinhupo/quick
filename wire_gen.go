@@ -10,8 +10,8 @@ import (
 	"github.com/kaixinhupo/quick/controller"
 	"github.com/kaixinhupo/quick/dao/database"
 	"github.com/kaixinhupo/quick/dao/repository"
-	"github.com/kaixinhupo/quick/infrastruture/config"
-	"github.com/kaixinhupo/quick/infrastruture/db"
+	"github.com/kaixinhupo/quick/infrastructure/config"
+	"github.com/kaixinhupo/quick/infrastructure/db"
 	"github.com/kaixinhupo/quick/service/biz"
 	"github.com/kaixinhupo/quick/service/contract"
 )
@@ -29,6 +29,15 @@ func InitUserController() *controller.UserController {
 	userServiceImpl := biz.NewUserService(userRepositoryImpl, engine)
 	userController := controller.NewUserController(userServiceImpl)
 	return userController
+}
+
+func InitRoleController() *controller.RoleController {
+	xormConfig := config.DatasourceConfig()
+	engine := db.DefaultEngine(xormConfig)
+	roleRepositoryImpl := database.NewRoleRepository(engine)
+	roleServiceImpl := biz.NewRoleService(roleRepositoryImpl, engine)
+	roleController := controller.NewRoleController(roleServiceImpl)
+	return roleController
 }
 
 func InitGenController() *controller.GenController {
@@ -55,3 +64,9 @@ var userServiceSet = wire.NewSet(biz.NewUserService, wire.Bind(new(contract.User
 var gencodeServiceSet = wire.NewSet(biz.NewGencodeService, wire.Bind(new(contract.GencodeService), new(*biz.GencodeServiceImpl)))
 
 var databaseMetaServiceSet = wire.NewSet(biz.NewDatabaseMetaService, wire.Bind(new(contract.DatabaseMetaService), new(*biz.DatabaseMetaServiceImpl)))
+
+// repository.RoleRepository
+var roleRepositorySet = wire.NewSet(database.NewRoleRepository, wire.Bind(new(repository.RoleRepository), new(*database.RoleRepositoryImpl)))
+
+// contract.RoleService
+var roleServiceSet = wire.NewSet(biz.NewRoleService, wire.Bind(new(contract.RoleService), new(*biz.RoleServiceImpl)))

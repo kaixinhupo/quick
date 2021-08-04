@@ -1,0 +1,24 @@
+// copy to wire.go
+// repository.RoleRepository
+var RepositorySet = wire.NewSet(
+  database.NewRoleRepository, 
+  wire.Bind(new (repository.RoleRepository),new (*database.RoleRepositoryImpl)),
+)
+
+// contract.RoleService
+var ServiceSet = wire.NewSet(
+  biz.NewRoleService, 
+  wire.Bind(new (contract.RoleService),new (*biz.RoleServiceImpl)),
+)
+
+
+func InitRoleController() *controller.RoleController {
+	wire.Build(xormEngineSet,RepositorySet,ServiceSet,controller.NewRoleController)
+	return &controller.RoleController{}
+}
+
+================================================================================================
+// copy to router.go
+
+InitRoleController(),
+

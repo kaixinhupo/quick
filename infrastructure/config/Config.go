@@ -25,14 +25,14 @@ func NewAppConfig() (*AppConfig, error) {
 	confPath := os.Getenv("CONF_PATH")
 	if confPath == "" {
 		dir := filepath.Dir(os.Args[0])
-		toml := filepath.Join(dir,"config.toml")
-		confPath, _ = filepath.Abs(toml)
+		tomlPath := filepath.Join(dir, "config.toml")
+		confPath, _ = filepath.Abs(tomlPath)
 	}
 	if confPath == "" {
 		return nil, errors.New("not found application config file")
 	}
 	log.Println("config file path:", confPath)
-	confBytes, err := ioutil.ReadFile(confPath) 
+	confBytes, err := ioutil.ReadFile(confPath)
 	if err != nil {
 		return nil, errors.New("read config file error：" + err.Error())
 	}
@@ -40,7 +40,7 @@ func NewAppConfig() (*AppConfig, error) {
 	appConfig := &AppConfig{}
 
 	if _, err := toml.Decode(string(confBytes), appConfig); err != nil {
-		log.Println("decode config file error ",err.Error())
+		log.Println("decode config file error ", err.Error())
 		return nil, err
 	}
 
@@ -60,23 +60,23 @@ type XormConfig struct {
 }
 
 type GenConfig struct {
-	Module string `toml:"module"`
-	TemplateDir string `toml:"templateDir"`
-	OutputDir string `toml:"outputDir"`
+	Module        string `toml:"module"`
+	TemplateDir   string `toml:"templateDir"`
+	OutputDir     string `toml:"outputDir"`
 	CreateTimeCol string `toml:"createTimeCol"`
 	UpdateTimeCol string `toml:"updateTimeCol"`
-	isInit bool
+	isInit        bool
 }
 
 func (gc *GenConfig) initGen() {
 	if !gc.isInit {
 		dir := filepath.Dir(os.Args[0])
 		if gc.TemplateDir == "" {
-			templates := filepath.Join(dir,"templates")
+			templates := filepath.Join(dir, "templates")
 			gc.TemplateDir, _ = filepath.Abs(templates)
 		}
 		if gc.OutputDir == "" {
-			output := filepath.Join(dir,"output")
+			output := filepath.Join(dir, "output")
 			gc.OutputDir, _ = filepath.Abs(output)
 		}
 		if gc.CreateTimeCol == "" {

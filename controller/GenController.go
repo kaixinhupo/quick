@@ -13,7 +13,7 @@ import (
 
 type GenController struct {
 	gencodeService contract.GencodeService
-	metaService contract.DatabaseMetaService
+	metaService    contract.DatabaseMetaService
 }
 
 func (c *GenController) GetAsync(ctx iris.Context) mvc.Result {
@@ -29,22 +29,24 @@ func (c *GenController) GetAsync(ctx iris.Context) mvc.Result {
 }
 
 func (c *GenController) GetTables(ctx iris.Context) mvc.Result {
-	
+
 	tableQuery := ctx.URLParam("tables")
 	if tableQuery == "" {
 		return mvc.Response{
 			Text: "query param [tables] not occours",
 		}
 	}
-	tables := strings.Split(tableQuery,",")
+	tables := strings.Split(tableQuery, ",")
 
-	meta,err := c.prepareMeta(tables); if err != nil {
+	meta, err := c.prepareMeta(tables)
+	if err != nil {
 		return mvc.Response{
 			Text: "fail",
 			Err:  err,
 		}
 	}
-	err = c.gencodeService.Generate(meta); if err != nil {
+	err = c.gencodeService.Generate(meta)
+	if err != nil {
 		return mvc.Response{
 			Text: "fail",
 			Err:  err,
@@ -56,19 +58,19 @@ func (c *GenController) GetTables(ctx iris.Context) mvc.Result {
 }
 
 // 准备元数据
-func (c *GenController) prepareMeta(tables []string) ([]*model.TableMeta,error) {
-	return  c.metaService.ReadMeta(tables)
+func (c *GenController) prepareMeta(tables []string) ([]*model.TableMeta, error) {
+	return c.metaService.ReadMeta(tables)
 }
 
-// 返回路由根路径
+// Route 返回路由根路径
 func (c GenController) Route() string {
 	return "/gen"
 }
 
-// 构造器
-func NewGenController(service contract.GencodeService,metaService contract.DatabaseMetaService) *GenController {
+// NewGenController 构造器
+func NewGenController(service contract.GencodeService, metaService contract.DatabaseMetaService) *GenController {
 	return &GenController{
 		gencodeService: service,
-		metaService: metaService,
+		metaService:    metaService,
 	}
 }

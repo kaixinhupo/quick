@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"{{Module}}/dao/entity"
-	"{{Module}}/infrastruture/db"
+	"{{Module}}/infrastructure/db"
 	"{{Module}}/model"
 	"xorm.io/xorm"
 )
@@ -23,13 +23,14 @@ func New{{ModelName}}Repository(engine *xorm.Engine) *{{ModelName}}RepositoryImp
 }
 
 func (impl *{{ModelName}}RepositoryImpl) Insert(entity *entity.{{ModelName}}Entity, session *xorm.Session) (*entity.{{ModelName}}Entity, error) {
-	_, err := impl.engine.InsertOne(entity); if err != nil {
-		return nil, err
-	}
+	s := db.OpenSession(impl.engine,session,"t")
+    _, err := s.InsertOne(entity); if err != nil {
+        return nil, err
+    }
 	return entity,nil
 }
 
-func (impl *{{ModelName}}RepositoryImpl) Count(param *model.{{ModelName}}QueryReq, session *xorm.Session) (int64) {
+func (impl *{{ModelName}}RepositoryImpl) Count(param *model.{{ModelName}}QueryReq, session *xorm.Session) int64 {
 	s := impl.createFilter(param, false, session)
 	cnt, err := s.Count(new(entity.{{ModelName}}Entity)); if err != nil {
 		log.Println("error occurred when count",err)
@@ -38,7 +39,7 @@ func (impl *{{ModelName}}RepositoryImpl) Count(param *model.{{ModelName}}QueryRe
 	return cnt
 }
 
-func (impl *{{ModelName}}RepositoryImpl) List(param *model.{{ModelName}}QueryReq, session *xorm.Session) ([]*entity.{{ModelName}}Entity) {
+func (impl *{{ModelName}}RepositoryImpl) List(param *model.{{ModelName}}QueryReq, session *xorm.Session) []*entity.{{ModelName}}Entity {
 	s := impl.createFilter(param, false, session)
 	list := make([]*entity.{{ModelName}}Entity, 0)
 	err := s.Find(&list);if err != nil {

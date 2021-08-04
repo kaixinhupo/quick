@@ -6,18 +6,23 @@ import (
 	"os"
 )
 
-//压缩文件
-//files 文件数组，可以是不同dir下的文件或者文件夹
-//dest 压缩文件存放地址
+// Compress 压缩文件
+// files 文件数组，可以是不同dir下的文件或者文件夹
+// dest 压缩文件存放地址
 func Compress(dir string, dest string) error {
 	d, _ := os.Create(dest)
-	defer d.Close()
+	defer func(d *os.File) {
+		_ = d.Close()
+	}(d)
 	w := zip.NewWriter(d)
-	defer w.Close()
-    file ,_:= os.OpenFile(dir,os.O_RDONLY,os.ModeDir)
-    defer file.Close()
-	compress(file, "", w)
-	return nil
+	defer func(w *zip.Writer) {
+		_ = w.Close()
+	}(w)
+	file, _ := os.OpenFile(dir, os.O_RDONLY, os.ModeDir)
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
+	return compress(file, "", w)
 }
 
 func compress(file *os.File, prefix string, zw *zip.Writer) error {
@@ -26,11 +31,11 @@ func compress(file *os.File, prefix string, zw *zip.Writer) error {
 		return err
 	}
 	if info.IsDir() {
-        if prefix =="" {
-            prefix ="/"
-        } else {
-            prefix = prefix + "/" + info.Name()
-        }
+		if prefix == "" {
+			prefix = "/"
+		} else {
+			prefix = prefix + "/" + info.Name()
+		}
 		fileInfos, err := file.Readdir(-1)
 		if err != nil {
 			return err
@@ -57,7 +62,10 @@ func compress(file *os.File, prefix string, zw *zip.Writer) error {
 			return err
 		}
 		_, err = io.Copy(writer, file)
-		file.Close()
+		err = file.Close()
+		if err != nil {
+			return err
+		}
 		if err != nil {
 			return err
 		}

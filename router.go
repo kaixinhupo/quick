@@ -3,18 +3,19 @@ package main
 import (
 	"log"
 
-	"github.com/kaixinhupo/quick/infrastruture/web"
+	"github.com/kaixinhupo/quick/infrastructure/web"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 )
 
 // 控制器列表
-var routers = [...]web.RouteController {
+var routers = [...]web.RouteController{
 	InitUserController(),
 	InitGenController(),
+	InitRoleController(),
 }
 
-// 注册路由
+// ConfigureRouter 注册路由
 func ConfigureRouter(app *iris.Application) {
 	for _, c := range routers {
 		p := c.Route()
@@ -22,6 +23,6 @@ func ConfigureRouter(app *iris.Application) {
 	}
 	r := app.GetRoutes()
 	for _, v := range r {
-		log.Println(v.Method,v.Path)
+		log.Println(v.Method, v.Path)
 	}
 }

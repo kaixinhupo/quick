@@ -9,17 +9,17 @@ import (
 	"xorm.io/xorm"
 )
 
-type UserRepositoryImpl struct {
+type RoleRepositoryImpl struct {
 	engine *xorm.Engine
 }
 
-func NewUserRepository(engine *xorm.Engine) *UserRepositoryImpl {
-	return &UserRepositoryImpl{
+func NewRoleRepository(engine *xorm.Engine) *RoleRepositoryImpl {
+	return &RoleRepositoryImpl{
 		engine: engine,
 	}
 }
 
-func (impl *UserRepositoryImpl) Insert(entity *entity.UserEntity, session *xorm.Session) (*entity.UserEntity, error) {
+func (impl *RoleRepositoryImpl) Insert(entity *entity.RoleEntity, session *xorm.Session) (*entity.RoleEntity, error) {
 	s := db.OpenSession(impl.engine, session, "t")
 	_, err := s.InsertOne(entity)
 	if err != nil {
@@ -28,9 +28,9 @@ func (impl *UserRepositoryImpl) Insert(entity *entity.UserEntity, session *xorm.
 	return entity, nil
 }
 
-func (impl *UserRepositoryImpl) Count(param *model.UserQueryReq, session *xorm.Session) int64 {
+func (impl *RoleRepositoryImpl) Count(param *model.RoleQueryReq, session *xorm.Session) int64 {
 	s := impl.createFilter(param, false, session)
-	cnt, err := s.Count(new(entity.UserEntity))
+	cnt, err := s.Count(new(entity.RoleEntity))
 	if err != nil {
 		log.Println("error occurred when count", err)
 		return 0
@@ -38,9 +38,9 @@ func (impl *UserRepositoryImpl) Count(param *model.UserQueryReq, session *xorm.S
 	return cnt
 }
 
-func (impl *UserRepositoryImpl) List(param *model.UserQueryReq, session *xorm.Session) []*entity.UserEntity {
+func (impl *RoleRepositoryImpl) List(param *model.RoleQueryReq, session *xorm.Session) []*entity.RoleEntity {
 	s := impl.createFilter(param, false, session)
-	list := make([]*entity.UserEntity, 0)
+	list := make([]*entity.RoleEntity, 0)
 	err := s.Find(&list)
 	if err != nil {
 		log.Println("error occurred when find", err)
@@ -49,10 +49,10 @@ func (impl *UserRepositoryImpl) List(param *model.UserQueryReq, session *xorm.Se
 	return list
 }
 
-func (impl *UserRepositoryImpl) Entry(id int64, session *xorm.Session) *entity.UserEntity {
+func (impl *RoleRepositoryImpl) Entry(id int64, session *xorm.Session) *entity.RoleEntity {
 	s := db.OpenSession(impl.engine, session, "t")
-	item := &entity.UserEntity{}
-	found, err := s.ID(id).Get(item)
+	entity := &entity.RoleEntity{}
+	found, err := s.ID(id).Get(entity)
 	if err != nil {
 		log.Printf("entry for key:%d not found,err:%s \n", id, err.Error())
 		return nil
@@ -60,10 +60,10 @@ func (impl *UserRepositoryImpl) Entry(id int64, session *xorm.Session) *entity.U
 	if !found {
 		return nil
 	}
-	return item
+	return entity
 }
 
-func (impl *UserRepositoryImpl) Update(entity *entity.UserEntity, allFields bool, session *xorm.Session) (int64, error) {
+func (impl *RoleRepositoryImpl) Update(entity *entity.RoleEntity, allFields bool, session *xorm.Session) (int64, error) {
 	s := db.OpenSession(impl.engine, session, "t")
 	if allFields {
 		return s.ID(entity.Id).AllCols().Update(entity)
@@ -72,16 +72,16 @@ func (impl *UserRepositoryImpl) Update(entity *entity.UserEntity, allFields bool
 	}
 }
 
-func (impl *UserRepositoryImpl) Delete(id int64, session *xorm.Session) error {
+func (impl *RoleRepositoryImpl) Delete(id int64, session *xorm.Session) error {
 	s := db.OpenSession(impl.engine, session, "t")
-	_, err := s.ID(id).Delete(new(entity.UserEntity))
+	_, err := s.ID(id).Delete(new(entity.RoleEntity))
 	return err
 }
 
-func (impl *UserRepositoryImpl) createFilter(param *model.UserQueryReq, page bool, session *xorm.Session) *xorm.Session {
+func (impl *RoleRepositoryImpl) createFilter(param *model.RoleQueryReq, page bool, session *xorm.Session) *xorm.Session {
 	s := db.OpenSession(impl.engine, session, "t")
-	if param.Username != "" {
-		s.Where("t.username=?", param.Username)
+	if param.RoleName != "" {
+		s.Where("t.role_name=?", param.RoleName)
 	}
 	if page {
 		size, offset := db.CalcLimit(&param.Page)

@@ -1,14 +1,15 @@
 {
     "TableName":"user",                   //database table name
-    "TableComment":"用户",                //database table comment
+    "TableComment":"用户",                 //database table comment
     "ModelName":"User",                   //model name
-    "ModelNameLower":"user",              //model name which first letter is lower case
+    "ModelNameFirstLower":"user",         //model name which first letter is lower case
     "BasePath":"/user",                   //base url path
     "Fields": [
         {
             "Col":"id",                   //table column
-            "ColType":"bigint",           //column data type
-            "ColLen":0,                   //column length
+            "ColType":"BIGINT",           //column data type
+            "ColTypeLower":"bigint"       //column data type lower case
+            "ColTypeLen":0,               //column data type length
             "ColComment":"ID",            //column comment
             "ColNull":false,              //column is null ?
             "ColPk":true                  //primary key

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/kaixinhupo/quick/infrastruture/web"
+	"github.com/kaixinhupo/quick/infrastructure/web"
 	"github.com/kaixinhupo/quick/model"
 	"github.com/kaixinhupo/quick/service/contract"
 	"github.com/kataras/iris/v12"
@@ -12,9 +12,9 @@ type UserController struct {
 	svc contract.UserService
 }
 
-
+// Get 获取用户分页列表
 // @Summary 获取用户分页列表
-// @Description 
+// @Description
 // @Tags　用户管理
 // @Produce application/json
 // @Param object query model.UserQueryReq false "查询参数"
@@ -23,21 +23,23 @@ type UserController struct {
 // @Success 200 {object} web.PageResp{records=[]model.UserDetailResp}
 // @Failure 400 {object} web.ErrorResp
 // @Router /user [get]
-func (c *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Result {
+func (c *UserController) Get(ctx iris.Context, param model.UserQueryReq) mvc.Result {
 	rst := web.ValidateRequest(param)
 	if rst != nil {
-        return rst
+		return rst
 	}
 
-	list,err := c.svc.Query(&param); if err != nil {
+	list, err := c.svc.Query(&param)
+	if err != nil {
 		return web.WrapError(err)
 	}
 
 	return web.WrapResp(list)
 }
 
+// Post 创建用户记录
 // @Summary 创建用户记录
-// @Description 
+// @Description
 // @Tags　用户管理
 // @Accept application/json
 // @Produce application/json
@@ -45,38 +47,40 @@ func (c *UserController) Get(ctx iris.Context,param model.UserQueryReq) mvc.Resu
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user [post]
-func (c *UserController) Post(ctx iris.Context,param model.UserInfoReq) mvc.Result {
-	invalid := web.ValidateRequest(param); if invalid != nil {
-        return invalid
+func (c *UserController) Post(ctx iris.Context, param model.UserInfoReq) mvc.Result {
+	invalid := web.ValidateRequest(param)
+	if invalid != nil {
+		return invalid
 	}
 
-	vo, err := c.svc.Create(&param); if err != nil {
+	vo, err := c.svc.Create(&param)
+	if err != nil {
 		return web.WrapError(err)
-		
+
 	}
 	return web.WrapResp(vo)
 }
 
-
+// GetBy 获取单个用户记录
 // @Summary 获取单个用户记录
-// @Description 
+// @Description
 // @Tags　用户管理
 // @Produce application/json
 // @Param id path int64 true "ID"
 // @Success 200 {object} model.UserDetailResp
-// @Failure 404 
+// @Failure 404
 // @Router /user/{id} [get]
-func (c *UserController) GetBy(ctx iris.Context,id int64) mvc.Result {
-	vo, err := c.svc.Item(id); if err != nil {
+func (c *UserController) GetBy(ctx iris.Context, id int64) mvc.Result {
+	vo, err := c.svc.Item(id)
+	if err != nil {
 		return web.WrapError(err)
 	}
 	return web.WrapResp(vo)
 }
 
-
-
+// PutBy 更新用户记录
 // @Summary 更新用户记录
-// @Description 
+// @Description
 // @Tags　用户管理
 // @Accept application/json
 // @Produce application/json
@@ -85,20 +89,23 @@ func (c *UserController) GetBy(ctx iris.Context,id int64) mvc.Result {
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user/{id} [put]
-func (c *UserController) PutBy(ctx iris.Context,id int64,param model.UserInfoReq) mvc.Result {
-	invalid := web.ValidateRequest(param); if invalid != nil {
-        return invalid
+func (c *UserController) PutBy(ctx iris.Context, id int64, param model.UserInfoReq) mvc.Result {
+	invalid := web.ValidateRequest(param)
+	if invalid != nil {
+		return invalid
 	}
 
-	vo, err := c.svc.Update(id, &param); if err != nil {
+	vo, err := c.svc.Update(id, &param)
+	if err != nil {
 		return web.WrapError(err)
-		
+
 	}
 	return web.WrapResp(vo)
 }
 
+// PatchBy 修改用户记录
 // @Summary 修改用户记录
-// @Description 
+// @Description
 // @Tags　用户管理
 // @Accept application/json
 // @Produce application/json
@@ -107,33 +114,36 @@ func (c *UserController) PutBy(ctx iris.Context,id int64,param model.UserInfoReq
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user/{id} [patch]
-func (c *UserController) PatchBy(ctx iris.Context,id int64,param model.UserInfoReq) mvc.Result {
-	invalid := web.ValidateRequest(param); if invalid != nil {
-        return invalid
+func (c *UserController) PatchBy(ctx iris.Context, id int64, param model.UserInfoReq) mvc.Result {
+	invalid := web.ValidateRequest(param)
+	if invalid != nil {
+		return invalid
 	}
 
-	vo, err := c.svc.Patch(id, &param); if err != nil {
+	vo, err := c.svc.Patch(id, &param)
+	if err != nil {
 		return web.WrapError(err)
-		
+
 	}
 	return web.WrapResp(vo)
 }
 
+// DeleteBy 删除用户记录
 // @Summary 删除用户记录
-// @Description 
+// @Description
 // @Tags　用户管理
 // @Produce application/json
 // @Param id path int64 true "ID"
 // @Success 200 {object} model.UserDetailResp
 // @Failure 400 {object} web.ErrorResp
 // @Router /user/{id} [delete]
-func (c *UserController) DeleteBy(ctx iris.Context,id int64) mvc.Result {
-	err := c.svc.Delete(id); if err != nil {
+func (c *UserController) DeleteBy(ctx iris.Context, id int64) mvc.Result {
+	err := c.svc.Delete(id)
+	if err != nil {
 		return web.WrapError(err)
 	}
 	return web.WrapSuccess()
 }
-
 
 /*
 // 注册自定义路由
@@ -148,14 +158,14 @@ func (m *UserController) BeforeActivation(b mvc.BeforeActivation) {
 }
 */
 
-// 返回路由根路径
+// Route 返回路由根路径
 func (c UserController) Route() string {
 	return "/user"
 }
 
-// 构造器
+// NewUserController 构造器
 func NewUserController(userService contract.UserService) *UserController {
-	return &UserController {
+	return &UserController{
 		svc: userService,
 	}
 }

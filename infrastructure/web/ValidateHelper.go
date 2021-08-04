@@ -4,31 +4,30 @@ import (
 	"fmt"
 
 	"github.com/go-playground/validator"
-	"github.com/kaixinhupo/quick/infrastruture/core"
+	"github.com/kaixinhupo/quick/infrastructure/core"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 )
 
-var _validator =  validator.New()	
+var _validator = validator.New()
 
 func ValidateRequest(req interface{}) mvc.Result {
-	err:= _validator.Struct(req)
+	err := _validator.Struct(req)
 
 	if err != nil {
 		if errs, ok := err.(validator.ValidationErrors); ok {
 			validationErrors := wrapValidationErrors(errs)
-			return	mvc.Response {
+			return mvc.Response{
 				Code: iris.StatusUnprocessableEntity,
 				Object: NewErrorResp().
 					WithMessage("参数错误").
 					WithCode(core.CodeInvalidParam).
-					AppendError("detail",validationErrors),
+					AppendError("detail", validationErrors),
 			}
 		}
 	}
 	return nil
 }
-
 
 func wrapValidationErrors(errs validator.ValidationErrors) []ValidationError {
 	validationErrors := make([]ValidationError, 0, len(errs))
